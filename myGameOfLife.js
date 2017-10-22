@@ -63,16 +63,16 @@ sigTurno = function() {
 
 function imprimirTablero() {
   var ctx;
-  var canvas=document.getElementById('tabla');
+  this.canvas=document.getElementById('tabla');
   if(canvas.getContext){
-    ctx=canvas.getContext('2d');
+    ctx=this.canvas.getContext('2d');
   }
   for (var x = 0; x < this.tablero.length; x++) {
     for (var y = 0; y < this.tablero[x].length; y++) {
       if (this.tablero[x][y]==1) {
-        ctx.fillStyle="black";
+        ctx.fillStyle="#2c3e50";
       } else{
-        ctx.fillStyle="gray";
+        ctx.fillStyle="white";
       }
       ctx.fillRect(y*5,x*5,5,5);
     }
@@ -84,8 +84,8 @@ function init(){
   this.width=50;
   this.velocidad=400;
   crearTablero(this.height,this.width);
-  // llenarPistola();
-  imprimirTablero();
+  llenarPistola();
+  this.btnPistola = document.getElementById("pistola");
   this.btnIniciar = document.getElementById("iniciar");
   this.btnAleatorio = document.getElementById("aleatorio");
   this.btnDetener = document.getElementById("detener");
@@ -105,6 +105,7 @@ function correr(){
   this.btnAcelerar.disabled=false;
   this.btnRalentizar.disabled=false;
   this.btnAleatorio.disabled=true;
+  this.btnPistola.disabled=true;
   this.btnIniciar.disabled=true;
 }
 
@@ -114,6 +115,7 @@ function detener() {
   this.btnAcelerar.disabled=true;
   this.btnRalentizar.disabled=true;
   this.btnAleatorio.disabled=false;
+  this.btnPistola.disabled=false;
   this.btnIniciar.disabled=false;
 }
 
@@ -133,46 +135,79 @@ function ralentizar(){
   correr();
 }
 
-// function llenarPistola(){
-//   for (var x = 0; x < this.tablero.length; x++) {
-//     for (var y = 0; y < this.tablero[x].length; i++) {
-//       tablero[x][y]=0;
-//     }
-//   }
-//   this.tablero[0][24]=1;
-//   this.tablero[1][22]=1;
-//   this.tablero[1][24]=1;
-//   this.tablero[2][12]=1;
-//   this.tablero[2][13]=1;
-//   this.tablero[2][20]=1;
-//   this.tablero[2][21]=1;
-//   this.tablero[2][34]=1;
-//   this.tablero[2][35]=1;
-//   this.tablero[3][11]=1;
-//   this.tablero[3][15]=1;
-//   this.tablero[3][20]=1;
-//   this.tablero[3][21]=1;
-//   this.tablero[3][34]=1;
-//   this.tablero[3][35]=1;
-//   this.tablero[4][0]=1;
-//   this.tablero[4][1]=1;
-//   this.tablero[4][10]=1;
-//   this.tablero[4][16]=1;
-//   this.tablero[4][20]=1;
-//   this.tablero[4][21]=1;
-//   this.tablero[5][0]=1;
-//   this.tablero[5][1]=1;
-//   this.tablero[5][10]=1;
-//   this.tablero[5][14]=1;
-//   this.tablero[5][16]=1;
-//   this.tablero[5][17]=1;
-//   this.tablero[5][22]=1;
-//   this.tablero[5][24]=1;
-//   this.tablero[6][10]=1;
-//   this.tablero[6][16]=1;
-//   this.tablero[6][24]=1;
-//   this.tablero[7][11]=1;
-//   this.tablero[7][15]=1;
-//   this.tablero[8][12]=1;
-//   this.tablero[8][13]=1;
-// }
+function llenarPistola(){
+  for (var x = 0; x < this.tablero.length; x++) {
+    for (var y = 0; y < this.tablero[x].length; y++) {
+      tablero[x][y]=0;
+    }
+  }
+  this.tablero[0][24]=1;
+  this.tablero[1][22]=1;
+  this.tablero[1][24]=1;
+  this.tablero[2][12]=1;
+  this.tablero[2][13]=1;
+  this.tablero[2][20]=1;
+  this.tablero[2][21]=1;
+  this.tablero[2][34]=1;
+  this.tablero[2][35]=1;
+  this.tablero[3][11]=1;
+  this.tablero[3][15]=1;
+  this.tablero[3][20]=1;
+  this.tablero[3][21]=1;
+  this.tablero[3][34]=1;
+  this.tablero[3][35]=1;
+  this.tablero[4][0]=1;
+  this.tablero[4][1]=1;
+  this.tablero[4][10]=1;
+  this.tablero[4][16]=1;
+  this.tablero[4][20]=1;
+  this.tablero[4][21]=1;
+  this.tablero[5][0]=1;
+  this.tablero[5][1]=1;
+  this.tablero[5][10]=1;
+  this.tablero[5][14]=1;
+  this.tablero[5][16]=1;
+  this.tablero[5][17]=1;
+  this.tablero[5][22]=1;
+  this.tablero[5][24]=1;
+  this.tablero[6][10]=1;
+  this.tablero[6][16]=1;
+  this.tablero[6][24]=1;
+  this.tablero[7][11]=1;
+  this.tablero[7][15]=1;
+  this.tablero[8][12]=1;
+  this.tablero[8][13]=1;
+  imprimirTablero();
+}
+
+function agregarFila(){
+  this.canvas.height += 5;
+  this.tablero.push(new Array(this.tablero[0].length));
+  imprimirTablero();
+}
+
+function eliminarFila(){
+  if (this.canvas.height > 5) {
+    this.canvas.height -= 5;
+    this.tablero.pop();
+    imprimirTablero();
+  }
+}
+
+function agregarColumna(){
+  this.canvas.width += 5;
+  for (var x = 0; x < this.tablero.length; x++) {
+    this.tablero[x].push(0);
+  }
+  imprimirTablero();
+}
+
+function eliminarColumna(){
+  if (this.canvas.width > 5) {
+    this.canvas.width -= 5;
+    for (var x = 0; x < this.tablero.length; x++) {
+      this.tablero[x].pop();
+    }
+    imprimirTablero();
+  }
+}

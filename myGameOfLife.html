@@ -26,9 +26,10 @@
         		</canvas>
           </div>
 
-          <!-- Botones de control que serán agregados en  -->
+          <!-- Botones de control  -->
           <div class="col-md-12" id="botones">
             <div class="btn-group" role="group" aria-label="...">
+              <button type="button" id="pistola" class="btn btn-default" onclick="llenarPistola()">Patrón</button>
               <button type="button" id="aleatorio" class="btn btn-default" onclick="llenarTablero()">Aleatorio</button>
               <button type="button" id="iniciar" class="btn btn-default" onclick="correr()">Iniciar</button>
               <button type="button" id="detener" class="btn btn-default" onclick="detener()" disabled>Detener</button>
@@ -38,7 +39,15 @@
             <div class="btn-group" role="group" aria-label="...">
               <button type="button" id="acelerar" class="btn btn-default" onclick="acelerar()" disabled>Acelerar</button>
               <button type="button" id="ralentizar" class="btn btn-default" onclick="ralentizar()" disabled>Ralentizar</button>
-              <label>turno: <span id="velocidad"></span> segundos</label>
+              <label>turno: <span id="velocidad">0.4</span> segundos</label>
+            </div>
+          </div>
+          <div class="col-md-12" id="botones">
+            <div class="btn-group" role="group" aria-label="...">
+              <button type="button" id="agregarFila" class="btn btn-default" onclick="agregarFila()">Agregar Fila</button>
+              <button type="button" id="eliminarFila" class="btn btn-default" onclick="eliminarFila()">Eliminar Fila</button>
+              <button type="button" id="agregarColumna" class="btn btn-default" onclick="agregarColumna()">Agregar Columna</button>
+              <button type="button" id="eliminarColumna" class="btn btn-default" onclick="eliminarColumna()">Eliminar Columna</button>
             </div>
           </div>
         </div>
