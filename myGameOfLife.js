@@ -1,34 +1,33 @@
 // creacion de tablero
 function crearTablero(height, width){
-  var tablero = new Array(height);
-  for (var x = 0; x < tablero.length; x++) {
-    tablero[x] = new Array(width);
+  this.tablero = new Array(height);
+  for (var x = 0; x < this.tablero.length; x++) {
+    this.tablero[x] = new Array(width);
   }
-  return tablero;
 }
 
 
 // llenado aleatorio del tablero
-function llenarTablero(tablero){
-  for (var x = 0; x < tablero.length; x++) {
-    for (var y = 0; y < tablero[x].length; y++) {
-      tablero[x][y]= Math.round(Math.random()); //llenando los vectores con 0 y 1
+function llenarTablero(){
+  for (var x = 0; x < this.tablero.length; x++) {
+    for (var y = 0; y < this.tablero[x].length; y++) {
+      this.tablero[x][y]= Math.round(Math.random()); //llenando los vectores con 0 y 1
     }
   }
 }
 
 
 // en esta funcion se determina la vida de las celulas en el siguiente turno
-sigTurno = function(tablero) {
+sigTurno = function() {
   //se crea un tablero auxiliar del mismo tamaño para ir guardando ahi los resultados para el siguiente turno
-  var auxTablero = new Array(tablero.length);
-  for (var i = 0; i < tablero.length; i++) {
-    auxTablero[i] = new Array(tablero[i].length);
+  var auxTablero = new Array(this.tablero.length);
+  for (var i = 0; i < this.tablero.length; i++) {
+    auxTablero[i] = new Array(this.tablero[i].length);
   }
 
   //se empieza a recorrer el tablero para contar los vecinos
-  for (var x = 0; x < tablero.length; x++) {
-    for (var y = 0; y < tablero[x].length; y++) {
+  for (var x = 0; x < this.tablero.length; x++) {
+    for (var y = 0; y < this.tablero[x].length; y++) {
       var vecinos = 0;
       //se cuentan los vecinos con dos ciclos para recorrer de -1 a 1 en ambos ejes
       for (var dx = -1; dx <= 1; dx++) {
@@ -36,14 +35,14 @@ sigTurno = function(tablero) {
           //cuando se valida a la misma celula no se agregan vecinos aunque su valor sea 1
           if ( dx == 0 && dy == 0){}
           //de otra manera a todos los demas si, mientras existan en el tablero(no sean indefinidos) y su valor sea de 1
-          else if (typeof tablero[x+dx] !== 'undefined' && typeof tablero[x+dx][y+dy] !== 'undefined' && tablero[x+dx][y+dy]==1) {
+          else if (typeof this.tablero[x+dx] !== 'undefined' && typeof this.tablero[x+dx][y+dy] !== 'undefined' && this.tablero[x+dx][y+dy]==1) {
             vecinos++;
           }
         }
       }
 
       //aquí se evalua el numero de vecinos con las reglas existentes
-      var vida = tablero[x][y];
+      var vida = this.tablero[x][y];
       if (vecinos==3) {
         vida=1;
       } else if (vida==1&&vecinos==2) {
@@ -56,14 +55,14 @@ sigTurno = function(tablero) {
     }
   }
   //se regresa el valor del tablero auxiliar
-  return auxTablero;
+  this.tablero=auxTablero.slice();
 }
 
 
-function imprimirTablero(ctx, board) {
-  for (var x = 0; x < board.length; x++) {
-    for (var y = 0; y < board[x].length; y++) {
-      if (board[x][y]==1) {
+function imprimirTablero(ctx) {
+  for (var x = 0; x < this.tablero.length; x++) {
+    for (var y = 0; y < this.tablero[x].length; y++) {
+      if (this.tablero[x][y]==1) {
         ctx.fillStyle="black";
       } else{
         ctx.fillStyle="gray";
@@ -76,8 +75,8 @@ function imprimirTablero(ctx, board) {
 function init(){
   var height=50;
   var width=50;
-  var tablero = crearTablero(height,width);
-  llenarTablero(tablero);
+  crearTablero(height,width);
+  llenarTablero();
   var ctx;
   var canvas=document.getElementById('tabla');
   if(canvas.getContext){
@@ -86,7 +85,7 @@ function init(){
     return 1;
   }
   setInterval(function(){
-    imprimirTablero(ctx, tablero);
-    tablero=sigTurno(tablero);
+    imprimirTablero(ctx, this.tablero);
+    sigTurno(this.tablero);
   },250);
 }
