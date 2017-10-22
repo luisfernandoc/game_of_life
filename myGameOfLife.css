@@ -20,3 +20,8 @@ body{
 #botones{
   margin-bottom: 3px;
 }
+
+.col-md-12 label{
+  margin-left: 5px;
+  margin-top: 7px;
+}

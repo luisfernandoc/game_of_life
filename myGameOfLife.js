@@ -15,7 +15,6 @@ function llenarTablero(){
     }
   }
   imprimirTablero();
-  detener();
 }
 
 
@@ -60,47 +59,54 @@ sigTurno = function() {
   this.tablero=auxTablero.slice();
 }
 
-
+//imprime los vectores con los valores de las celulas
 function imprimirTablero() {
   var ctx;
-  this.canvas=document.getElementById('tabla');
-  if(canvas.getContext){
-    ctx=this.canvas.getContext('2d');
-  }
+  this.canvas=document.getElementById('tabla'); //obtenemos el canvas para su manipulación
+  ctx=this.canvas.getContext('2d');
   for (var x = 0; x < this.tablero.length; x++) {
     for (var y = 0; y < this.tablero[x].length; y++) {
-      if (this.tablero[x][y]==1) {
+      if (this.tablero[x][y]==1) { //determina el color de la celda
         ctx.fillStyle="#2c3e50";
       } else{
         ctx.fillStyle="white";
       }
-      ctx.fillRect(y*5,x*5,5,5);
+      // los siguientes comandos comentados sirven para el borde de celda pero hacen muy lento el script
+      // ctx.rect(y*5,x*5,5,5);
+      // ctx.stroke();
+      ctx.fillRect(y*5,x*5,5,5); //colorear la celda
     }
   }
 }
 
+//funcion inicial que se activa al terminar de cargar el body
 function init(){
-  this.height=50;
+  this.height=50; //definimos numero de celulas por altura y ancho del tablero por default en pixeles
   this.width=50;
-  this.velocidad=400;
+  this.velocidad=400; //definimos la velocidad inicial en milisegundos
   crearTablero(this.height,this.width);
   llenarPistola();
+  //obtenemos datos de botones para su manipulación
   this.btnPistola = document.getElementById("pistola");
   this.btnIniciar = document.getElementById("iniciar");
   this.btnAleatorio = document.getElementById("aleatorio");
   this.btnDetener = document.getElementById("detener");
   this.btnAcelerar = document.getElementById("acelerar");
   this.btnRalentizar = document.getElementById("ralentizar");
-  this.lblVelocidad = document.getElementById("velocidad")
+  this.lblVelocidad = document.getElementById("velocidad");
+  this.lblColumnas = document.getElementById("columnas");
+  this.lblFilas = document.getElementById("filas");
 }
 
+//funcion que inicia el juego
 function correr(){
-  this.intervalID = setInterval(function(){
-    imprimirTablero();
+  this.intervalID = setInterval(function(){ //obtenemos el id que nos regresa la funcion setInterval
+    imprimirTablero(); //definimos las acciones del juego que son imprimir el tablero y calcular el siguiente turno
     sigTurno();
-  },this.velocidad);
+  },this.velocidad); //esto lo hara cada cierto tiempo definido por la velocidad
 
-  this.lblVelocidad.innerHTML=this.velocidad/1000;
+  this.lblVelocidad.innerHTML=this.velocidad/1000; //mostrar la velocidad en el label
+  //activar y desactivar los botones necesarios
   this.btnDetener.disabled=false;
   this.btnAcelerar.disabled=false;
   this.btnRalentizar.disabled=false;
@@ -110,7 +116,8 @@ function correr(){
 }
 
 function detener() {
-  clearInterval(this.intervalID);
+  clearInterval(this.intervalID); //detenemos el intervalo con el id obtenido de setInterval
+  //activar y desactivar los botones necesarios
   this.btnDetener.disabled=true;
   this.btnAcelerar.disabled=true;
   this.btnRalentizar.disabled=true;
@@ -120,27 +127,29 @@ function detener() {
 }
 
 function acelerar(){
-  detener();
-  if (this.velocidad>=50) {
+  detener(); //detenemos el intervalo para crear un nuevo intervalo
+  if (this.velocidad>=50) { //hacemos validación para limitar el intervalo de tiempo
     this.velocidad/=2;
   }
-  correr();
+  correr(); //corremos de nuevo el juego
 };
 
 function ralentizar(){
-  detener();
-  if (this.velocidad<2000) {
+  detener(); //detenemos el intervalo para crear un nuevo intervalo
+  if (this.velocidad<2000) { //hacemos validación para limitar el intervalo de tiempo
     this.velocidad*=2;
   }
-  correr();
+  correr(); //corremos de nuevo el juego
 }
 
+//funcion para llenar el vector con valores especificos y crear un patron de "pistola de deslizadores"
 function llenarPistola(){
   for (var x = 0; x < this.tablero.length; x++) {
     for (var y = 0; y < this.tablero[x].length; y++) {
-      tablero[x][y]=0;
+      tablero[x][y]=0; //llenamos el vector con ceros
     }
   }
+  //definimos las celulas vivas necesarias para el patron;
   this.tablero[0][24]=1;
   this.tablero[1][22]=1;
   this.tablero[1][24]=1;
@@ -180,34 +189,39 @@ function llenarPistola(){
   imprimirTablero();
 }
 
+
 function agregarFila(){
-  this.canvas.height += 5;
-  this.tablero.push(new Array(this.tablero[0].length));
+  this.canvas.height += 5; //aumentamos la altura del canvas
+  this.tablero.push(new Array(this.tablero[0].length)); //agregamos una fila al vector con un vector adentro
+  this.lblFilas.innerHTML=this.canvas.height/5; //mostrar numero de filas
   imprimirTablero();
 }
 
 function eliminarFila(){
-  if (this.canvas.height > 5) {
-    this.canvas.height -= 5;
-    this.tablero.pop();
+  if (this.canvas.height > 5) { //validamos que el tablero no se quede sin filas
+    this.canvas.height -= 5; //restamos la altura del canvas
+    this.tablero.pop(); //eliminamos una fila del vector
     imprimirTablero();
+    this.lblFilas.innerHTML=this.canvas.height/5; //mostrar numero de filas
   }
 }
 
 function agregarColumna(){
-  this.canvas.width += 5;
-  for (var x = 0; x < this.tablero.length; x++) {
-    this.tablero[x].push(0);
+  this.canvas.width += 5; //aumenta el ancho del canvas
+  for (var x = 0; x < this.tablero.length; x++) { //recorre el vector para agregar una celda al final de cada fila
+    this.tablero[x].push(0); //agregamos una celda al final de cada fila para crear una columna nueva
   }
+  this.lblColumnas.innerHTML=this.canvas.width/5; //mostrar numero de columnas
   imprimirTablero();
 }
 
 function eliminarColumna(){
-  if (this.canvas.width > 5) {
-    this.canvas.width -= 5;
-    for (var x = 0; x < this.tablero.length; x++) {
-      this.tablero[x].pop();
+  if (this.canvas.width > 5) {  //validamos que el tablero no se quede sin columnas
+    this.canvas.width -= 5; //desminuimos el ancho del canvas
+    for (var x = 0; x < this.tablero.length; x++) { //recorre el vector para eliminar una celda al final de cada fila
+      this.tablero[x].pop(); //eliminamos una celda al final de cada fila para eliminar una columna completa
     }
+    this.lblColumnas.innerHTML=this.canvas.width/5; //mostrar numero de columnas
     imprimirTablero();
   }
 }
