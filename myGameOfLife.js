@@ -14,6 +14,8 @@ function llenarTablero(){
       this.tablero[x][y]= Math.round(Math.random()); //llenando los vectores con 0 y 1
     }
   }
+  imprimirTablero();
+  detener();
 }
 
 
@@ -59,7 +61,12 @@ sigTurno = function() {
 }
 
 
-function imprimirTablero(ctx) {
+function imprimirTablero() {
+  var ctx;
+  var canvas=document.getElementById('tabla');
+  if(canvas.getContext){
+    ctx=canvas.getContext('2d');
+  }
   for (var x = 0; x < this.tablero.length; x++) {
     for (var y = 0; y < this.tablero[x].length; y++) {
       if (this.tablero[x][y]==1) {
@@ -73,19 +80,99 @@ function imprimirTablero(ctx) {
 }
 
 function init(){
-  var height=50;
-  var width=50;
-  crearTablero(height,width);
-  llenarTablero();
-  var ctx;
-  var canvas=document.getElementById('tabla');
-  if(canvas.getContext){
-    ctx=canvas.getContext('2d');
-  }else{
-    return 1;
-  }
-  setInterval(function(){
-    imprimirTablero(ctx, this.tablero);
-    sigTurno(this.tablero);
-  },250);
+  this.height=50;
+  this.width=50;
+  this.velocidad=400;
+  crearTablero(this.height,this.width);
+  // llenarPistola();
+  imprimirTablero();
+  this.btnIniciar = document.getElementById("iniciar");
+  this.btnAleatorio = document.getElementById("aleatorio");
+  this.btnDetener = document.getElementById("detener");
+  this.btnAcelerar = document.getElementById("acelerar");
+  this.btnRalentizar = document.getElementById("ralentizar");
+  this.lblVelocidad = document.getElementById("velocidad")
 }
+
+function correr(){
+  this.intervalID = setInterval(function(){
+    imprimirTablero();
+    sigTurno();
+  },this.velocidad);
+
+  this.lblVelocidad.innerHTML=this.velocidad/1000;
+  this.btnDetener.disabled=false;
+  this.btnAcelerar.disabled=false;
+  this.btnRalentizar.disabled=false;
+  this.btnAleatorio.disabled=true;
+  this.btnIniciar.disabled=true;
+}
+
+function detener() {
+  clearInterval(this.intervalID);
+  this.btnDetener.disabled=true;
+  this.btnAcelerar.disabled=true;
+  this.btnRalentizar.disabled=true;
+  this.btnAleatorio.disabled=false;
+  this.btnIniciar.disabled=false;
+}
+
+function acelerar(){
+  detener();
+  if (this.velocidad>=50) {
+    this.velocidad/=2;
+  }
+  correr();
+};
+
+function ralentizar(){
+  detener();
+  if (this.velocidad<2000) {
+    this.velocidad*=2;
+  }
+  correr();
+}
+
+// function llenarPistola(){
+//   for (var x = 0; x < this.tablero.length; x++) {
+//     for (var y = 0; y < this.tablero[x].length; i++) {
+//       tablero[x][y]=0;
+//     }
+//   }
+//   this.tablero[0][24]=1;
+//   this.tablero[1][22]=1;
+//   this.tablero[1][24]=1;
+//   this.tablero[2][12]=1;
+//   this.tablero[2][13]=1;
+//   this.tablero[2][20]=1;
+//   this.tablero[2][21]=1;
+//   this.tablero[2][34]=1;
+//   this.tablero[2][35]=1;
+//   this.tablero[3][11]=1;
+//   this.tablero[3][15]=1;
+//   this.tablero[3][20]=1;
+//   this.tablero[3][21]=1;
+//   this.tablero[3][34]=1;
+//   this.tablero[3][35]=1;
+//   this.tablero[4][0]=1;
+//   this.tablero[4][1]=1;
+//   this.tablero[4][10]=1;
+//   this.tablero[4][16]=1;
+//   this.tablero[4][20]=1;
+//   this.tablero[4][21]=1;
+//   this.tablero[5][0]=1;
+//   this.tablero[5][1]=1;
+//   this.tablero[5][10]=1;
+//   this.tablero[5][14]=1;
+//   this.tablero[5][16]=1;
+//   this.tablero[5][17]=1;
+//   this.tablero[5][22]=1;
+//   this.tablero[5][24]=1;
+//   this.tablero[6][10]=1;
+//   this.tablero[6][16]=1;
+//   this.tablero[6][24]=1;
+//   this.tablero[7][11]=1;
+//   this.tablero[7][15]=1;
+//   this.tablero[8][12]=1;
+//   this.tablero[8][13]=1;
+// }

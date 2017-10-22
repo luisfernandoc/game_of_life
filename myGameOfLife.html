@@ -25,15 +25,22 @@
         			Este navegador no soporta CANVAS! <!--texto que se refleja cuando el navegador no soporta canvas -->
         		</canvas>
           </div>
-          <!-- Botones de control que serán agregados en  -->
-          <!-- <div class="col-md-12" id="botones">
-            <div class="btn-group" role="group" aria-label="...">
-            <button type="button" class="btn btn-default">Aleatorio</button>
-            <button type="button" class="btn btn-default">Iniciar</button>
-            <button type="button" class="btn btn-default">Detener</button>
-          </div>
 
-        </div>-->
+          <!-- Botones de control que serán agregados en  -->
+          <div class="col-md-12" id="botones">
+            <div class="btn-group" role="group" aria-label="...">
+              <button type="button" id="aleatorio" class="btn btn-default" onclick="llenarTablero()">Aleatorio</button>
+              <button type="button" id="iniciar" class="btn btn-default" onclick="correr()">Iniciar</button>
+              <button type="button" id="detener" class="btn btn-default" onclick="detener()" disabled>Detener</button>
+            </div>
+          </div>
+          <div class="col-md-12" id="botones">
+            <div class="btn-group" role="group" aria-label="...">
+              <button type="button" id="acelerar" class="btn btn-default" onclick="acelerar()" disabled>Acelerar</button>
+              <button type="button" id="ralentizar" class="btn btn-default" onclick="ralentizar()" disabled>Ralentizar</button>
+              <label>turno: <span id="velocidad"></span> segundos</label>
+            </div>
+          </div>
         </div>
 
 
