@@ -191,10 +191,12 @@ function llenarPistola(){
 
 
 function agregarFila(){
-  this.canvas.height += 5; //aumentamos la altura del canvas
-  this.tablero.push(new Array(this.tablero[0].length)); //agregamos una fila al vector con un vector adentro
-  this.lblFilas.innerHTML=this.canvas.height/5; //mostrar numero de filas
-  imprimirTablero();
+  if (this.canvas.height < 375) {
+    this.canvas.height += 5; //aumentamos la altura del canvas
+    this.tablero.push(new Array(this.tablero[0].length)); //agregamos una fila al vector con un vector adentro
+    this.lblFilas.innerHTML=this.canvas.height/5; //mostrar numero de filas
+    imprimirTablero();
+  }
 }
 
 function eliminarFila(){
@@ -207,12 +209,14 @@ function eliminarFila(){
 }
 
 function agregarColumna(){
-  this.canvas.width += 5; //aumenta el ancho del canvas
-  for (var x = 0; x < this.tablero.length; x++) { //recorre el vector para agregar una celda al final de cada fila
-    this.tablero[x].push(0); //agregamos una celda al final de cada fila para crear una columna nueva
+  if (this.canvas.width<375) {
+    this.canvas.width += 5; //aumenta el ancho del canvas
+    for (var x = 0; x < this.tablero.length; x++) { //recorre el vector para agregar una celda al final de cada fila
+      this.tablero[x].push(0); //agregamos una celda al final de cada fila para crear una columna nueva
+    }
+    this.lblColumnas.innerHTML=this.canvas.width/5; //mostrar numero de columnas
+    imprimirTablero();
   }
-  this.lblColumnas.innerHTML=this.canvas.width/5; //mostrar numero de columnas
-  imprimirTablero();
 }
 
 function eliminarColumna(){

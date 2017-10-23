@@ -25,3 +25,7 @@ body{
   margin-left: 5px;
   margin-top: 7px;
 }
+
+#pistola, #aleatorio, #iniciar, #detener, #acelerar, #ralentizar, #velocidad, #agregarFila, #eliminarFila, #filas, #agregarColumna, #eliminarColumna, #columnas{
+  width: 130px;
+}
